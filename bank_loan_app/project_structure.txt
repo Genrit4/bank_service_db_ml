@@ -1,0 +1,17 @@
+bank_loan_app/
+├── backend/
+│   ├── alembic/               # миграции
+│   ├── model/                 # ваша log_reg.pkl
+│   ├── auth.py                # JWT, хеширование
+│   ├── database.py            # engine, Session
+│   ├── main.py                # FastAPI-приложение
+│   ├── ml.py                  # загрузка и wrapper для predict
+│   ├── models.py              # SQLModel/ORM-модели
+│   ├── requirements.txt
+│   └── alembic.ini
+├── frontend/
+│   ├── index.html
+│   ├── styles.css
+│   └── app.js
+├── docker-compose.yml
+└── .env                       # DB_USER, DB_PASSWORD, SECRET_KEY, etc.

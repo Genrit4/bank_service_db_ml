@@ -1,0 +1,13 @@
+# backend dependencies
+fastapi
+uvicorn[standard]
+sqlmodel
+alembic
+psycopg2-binary
+passlib[bcrypt]
+python-jose[cryptography]
+python-dotenv
+
+# ML model dependencies
+joblib
+scikit-learn==1.6.1
