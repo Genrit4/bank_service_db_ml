@@ -7,6 +7,7 @@ psycopg2-binary
 passlib[bcrypt]
 python-jose[cryptography]
 python-dotenv
+python-multipart
 
 # ML model dependencies
 joblib

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loan Prediction Frontend</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2rem; }
+    input, button { margin: 0.5rem 0; padding: 0.5rem; width: 100%; }
+    #result { margin-top: 1rem; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h2>Register</h2>
+  <input type="text" id="reg-login" placeholder="Login">
+  <input type="password" id="reg-password" placeholder="Password">
+  <button onclick="register()">Register</button>
+
+  <h2>Login</h2>
+  <input type="text" id="login-login" placeholder="Login">
+  <input type="password" id="login-password" placeholder="Password">
+  <button onclick="login()">Login</button>
+
+  <h2>Predict Loan</h2>
+  <input type="number" step="0.1" id="dependents" placeholder="Dependents">
+  <input type="number" step="0.1" id="income_annum" placeholder="Income Annum">
+  <input type="number" step="0.1" id="loan_amount" placeholder="Loan Amount">
+  <input type="number" step="0.1" id="loan_term" placeholder="Loan Term">
+  <input type="number" step="0.1" id="cibil_score" placeholder="CIBIL Score">
+  <input type="checkbox" id="self_employed"> Self Employed<br>
+  <input type="checkbox" id="education"> Education<br>
+  <button onclick="predict()">Predict</button>
+
+  <div id="result"></div>
+
+  <script>
+    const API_BASE = 'http://127.0.0.1:8000'; // FastAPI backend URL
+    let token = '';
+
+    async function register() {
+      const login = document.getElementById('reg-login').value;
+      const password = document.getElementById('reg-password').value;
+      const res = await fetch(`${API_BASE}/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ login, password })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        console.log('Registered:', data);
+        alert('Registration successful!');
+      } else {
+        const err = await res.text();
+        alert(`Error registering: ${err}`);
+      }
+    }
+
+    async function login() {
+      const login = document.getElementById('login-login').value;
+      const password = document.getElementById('login-password').value;
+      const formData = new URLSearchParams();
+      formData.append('username', login);
+      formData.append('password', password);
+
+      const res = await fetch(`${API_BASE}/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: formData
+      });
+      if (res.ok) {
+        const data = await res.json();
+        token = data.access_token;
+        console.log('Logged in! Token:', token);
+        alert('Login successful!');
+      } else {
+        const err = await res.text();
+        alert(`Error logging in: ${err}`);
+      }
+    }
+
+    async function predict() {
+      const payload = {
+        dependents: parseFloat(document.getElementById('dependents').value),
+        income_annum: parseFloat(document.getElementById('income_annum').value),
+        loan_amount: parseFloat(document.getElementById('loan_amount').value),
+        loan_term: parseFloat(document.getElementById('loan_term').value),
+        cibil_score: parseFloat(document.getElementById('cibil_score').value),
+        self_employed: document.getElementById('self_employed').checked,
+        education: document.getElementById('education').checked
+      };
+
+      const res = await fetch(`${API_BASE}/predict`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify(payload)
+      });
+      if (res.ok) {
+        const result = await res.json();
+        document.getElementById('result').innerText = 'Loan Status: ' + result.loan_status;
+      } else {
+        const err = await res.text();
+        alert(`Error predicting: ${err}`);
+      }
+    }
+  </script>
+</body>
+</html>
