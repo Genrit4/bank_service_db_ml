@@ -12,3 +12,4 @@ python-multipart
 # ML model dependencies
 joblib
 scikit-learn==1.6.1
+pandas

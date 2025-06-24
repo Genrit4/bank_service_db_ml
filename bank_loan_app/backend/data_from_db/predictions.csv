@@ -1,0 +1,2 @@
+loan_amount,user_id,income_annum,loan_term,self_employed,id,dependents,cibil_score,education,loan_status,timestamp
+1000.0,6,1000000000.0,2500.0,True,1,3.0,950.0,True,True,2025-06-24 09:51:39.432556
