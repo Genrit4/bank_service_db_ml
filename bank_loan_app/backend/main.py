@@ -11,10 +11,10 @@
 
 # backend/main.py
 from fastapi import FastAPI, Depends, HTTPException, status
-from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordRequestForm
-from pydantic import BaseModel
+from fastapi.staticfiles import StaticFiles
+from pydantic import BaseModel, EmailStr
 from sqlmodel import Session
 from database import init_db, get_session
 from models import User, Prediction
@@ -41,16 +41,12 @@ app.add_middleware(
 def on_startup():
     init_db()
 
-# Serve frontend index
-frontend_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'frontend')
-@app.get("/", response_class=HTMLResponse)
-def serve_index():
-    return FileResponse(os.path.join(frontend_dir, 'index.html'))
-
 # Auth schemas
 class RegisterSchema(BaseModel):
     login: str
     password: str
+    email: EmailStr
+    phone: str
 
 class Token(BaseModel):
     access_token: str
@@ -59,19 +55,26 @@ class Token(BaseModel):
 # Registration endpoint
 @app.post("/register", status_code=201)
 def register(data: RegisterSchema, session: Session = Depends(get_session)):
-    # Check if login already exists
-    existing = session.query(User).filter(User.login == data.login).first()
+    # Проверяем дубликаты по логину и email
+    existing = session.query(User).filter(
+        (User.login == data.login) | (User.email == data.email)
+    ).first()
     if existing:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"User with login '{data.login}' already exists"
+            detail="User with this login or email already exists"
         )
     hashed = get_password_hash(data.password)
-    user = User(login=data.login, password_hash=hashed)
+    user = User(
+        login=data.login,
+        password_hash=hashed,
+        email=data.email,
+        phone=data.phone
+    )
     session.add(user)
     session.commit()
     session.refresh(user)
-    return {"user_id": user.user_id, "login": user.login}
+    return {"user_id": user.user_id, "login": user.login, "email": user.email, "phone": user.phone}
 
 # Login endpoint
 @app.post("/login", response_model=Token)
@@ -121,3 +124,11 @@ async def predict(
     session.commit()
     session.refresh(pred)
     return {"loan_status": status}
+
+# После всех API-эндпоинтов монтируем фронтенд
+frontend_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend")
+app.mount(
+    "/",
+    StaticFiles(directory=frontend_dir, html=True),
+    name="frontend",
+)

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Предсказание кредита</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <header>
+    <h1>ТвояКредитКомпания</h1>
+    <a href="index.html" class="btn">Выйти</a>
+  </header>
+  <div class="container">
+    <h2>Рассчитать шанс получения кредита</h2>
+    <form onsubmit="event.preventDefault(); predictLoan();">
+      <input id="dependents" type="number" placeholder="Dependents" step="1" min="0" required>
+      <input id="income_annum" type="number" placeholder="Годовой доход" step="0.01" required>
+      <input id="loan_amount" type="number" placeholder="Сумма кредита" step="0.01" required>
+      <input id="loan_term" type="number" placeholder="Срок (мес.)" step="1" required>
+      <input id="cibil_score" type="number" placeholder="CIBIL Score" step="1" min="300" max="900" required>
+      <label><input id="self_employed" type="checkbox"> Самозанятый</label>
+      <label><input id="education" type="checkbox"> Высшее образование</label>
+      <button class="primary" type="submit">Рассчитать</button>
+    </form>
+    <p id="result"></p>
+  </div>
+  <script src="assets/scripts.js"></script>
+</body>
+</html>

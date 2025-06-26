@@ -8,6 +8,7 @@ passlib[bcrypt]
 python-jose[cryptography]
 python-dotenv
 python-multipart
+email-validator
 
 # ML model dependencies
 joblib

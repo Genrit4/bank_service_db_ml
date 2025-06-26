@@ -10,8 +10,10 @@ bank_loan_app/
 │   ├── requirements.txt
 │   └── alembic.ini
 ├── frontend/
+|   ├── assets/
+|   |    styles.css
+|   |    scripts.js
 │   ├── index.html
-│   ├── styles.css
-│   └── app.js
+|   ├── prediction.html
 ├── docker-compose.yml
 └── .env                       # DB_USER, DB_PASSWORD, SECRET_KEY, etc.

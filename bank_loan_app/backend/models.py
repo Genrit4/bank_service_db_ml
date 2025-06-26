@@ -1,13 +1,19 @@
 # backend/models.py
+
 from typing import Optional
 from datetime import datetime
 from sqlmodel import SQLModel, Field
 from sqlalchemy import Column, String
 
+
 class User(SQLModel, table=True):
     user_id: Optional[int] = Field(default=None, primary_key=True)
     login: str = Field(sa_column=Column(String(100), unique=True, nullable=False))
     password_hash: str
+
+    # Новые обязательные поля
+    email: str = Field(sa_column=Column(String(100), unique=True, nullable=False))
+    phone: str = Field(sa_column=Column(String(20), nullable=False))
 
 class Prediction(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)

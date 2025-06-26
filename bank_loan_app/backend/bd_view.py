@@ -8,7 +8,7 @@ import pandas as pd
 import os
 
 # Путь до папки
-output_dir = r"D:\summer_practice\bank_analys\bank_loan_app\backend\data_from_db"
+output_dir = r"D:\summer_practice\bank_service_db_ml\bank_loan_app\backend\data_from_db"
 os.makedirs(output_dir, exist_ok=True)  # Создаст папку, если нет
 
 # Получаем сессию
