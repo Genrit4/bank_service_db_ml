@@ -1,10 +1,14 @@
 const API = 'http://127.0.0.1:8000';
 
 // Модалки
-function openModal(id){ document.getElementById(id).style.display = 'flex'; }
-function closeModal(id){ document.getElementById(id).style.display = 'none'; }
+function openModal(id) {
+  document.getElementById(id).style.display = 'flex';
+}
+function closeModal(id) {
+  document.getElementById(id).style.display = 'none';
+}
 
-// Навигация по модалкам
+// Навигация
 function showLogin() {
   closeModal('authModal');
   openModal('loginModal');
@@ -24,7 +28,7 @@ async function register() {
   };
   const res = await fetch(`${API}/register`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {'Content-Type': 'application/json'},
     body: JSON.stringify(payload)
   });
   if (res.ok) {
@@ -38,22 +42,30 @@ async function register() {
 
 // Вход
 async function login() {
+  const usernameInput = document.getElementById('login-login').value;
+  const passwordInput = document.getElementById('login-password').value;
+  console.log('login start:', usernameInput);
+
   const form = new URLSearchParams();
-  form.append('username', document.getElementById('login-login').value);
-  form.append('password', document.getElementById('login-password').value);
+  form.append('username', usernameInput);
+  form.append('password', passwordInput);
 
   const res = await fetch(`${API}/login`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
     body: form
   });
 
+  console.log('login response status:', res.status);
   if (res.ok) {
     const data = await res.json();
-    // Сохраняем токен в localStorage
+    console.log('response token:', data.access_token);
+
     localStorage.setItem('access_token', data.access_token);
+    localStorage.setItem('username', usernameInput);
+    console.log('saved username:', localStorage.getItem('username'));
+
     alert('Вход выполнен');
-    closeModal('loginModal');
     window.location.href = 'prediction.html';
   } else {
     const err = await res.text();
@@ -61,9 +73,8 @@ async function login() {
   }
 }
 
-// Предсказание (prediction.html)
+// Предсказание
 async function predictLoan(event) {
-  // Если событие передано, подавляем дефолтное поведение
   if (event) event.preventDefault();
 
   const token = localStorage.getItem('access_token');
@@ -73,11 +84,16 @@ async function predictLoan(event) {
     return;
   }
 
-  const fields = ['dependents','income_annum','loan_amount','loan_term','cibil_score'];
-  const payload = {};
-  for (let f of fields) {
-    payload[f] = parseFloat(document.getElementById(f).value);
+  const storedUser = localStorage.getItem('username');
+  console.log('username on predict page:', storedUser);
+  if (storedUser) {
+    const userElem = document.getElementById('username');
+    if (userElem) userElem.innerText = storedUser;
   }
+
+  const fields = ['dependents', 'income_annum', 'loan_amount', 'loan_term', 'cibil_score'];
+  const payload = {};
+  fields.forEach(f => payload[f] = parseFloat(document.getElementById(f).value));
   payload.self_employed = document.getElementById('self_employed').checked;
   payload.education = document.getElementById('education').checked;
 

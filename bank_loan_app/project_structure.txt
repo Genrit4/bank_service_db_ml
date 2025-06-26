@@ -11,6 +11,8 @@ bank_loan_app/
 │   └── alembic.ini
 ├── frontend/
 |   ├── assets/
+         image/
+            avatar.png
 |   |    styles.css
 |   |    scripts.js
 │   ├── index.html

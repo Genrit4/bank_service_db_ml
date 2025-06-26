@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
@@ -8,12 +7,16 @@
 </head>
 <body>
   <header>
-    <h1>ТвояКредитКомпания</h1>
-    <a href="index.html" class="btn">Выйти</a>
+    <h1>Credex</h1>
+    <div class="user-info">
+      <img src="assets/image/avatar.png" alt="Аватар" class="icon">
+      <span id="username" class="user">Username</span>
+      <a href="index.html" class="btn">Выйти</a>
+    </div>
   </header>
   <div class="container">
     <h2>Рассчитать шанс получения кредита</h2>
-    <form onsubmit="event.preventDefault(); predictLoan();">
+    <form onsubmit="predictLoan(event)">
       <input id="dependents" type="number" placeholder="Dependents" step="1" min="0" required>
       <input id="income_annum" type="number" placeholder="Годовой доход" step="0.01" required>
       <input id="loan_amount" type="number" placeholder="Сумма кредита" step="0.01" required>
@@ -25,6 +28,12 @@
     </form>
     <p id="result"></p>
   </div>
-  <script src="assets/scripts.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const storedUser = localStorage.getItem('username');
+      if (storedUser) document.getElementById('username').innerText = storedUser;
+    });
+  </script>
+  <script src="/assets/scripts.js"></script>
 </body>
 </html>
