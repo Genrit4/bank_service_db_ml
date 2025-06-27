@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.env
+.env
+venv/
+env/
+ENV/
+*.sqlite3
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# IDEs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Docker
+**/pgdata/
+**/pgdata/*
+*.log
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+
+# Python packages
+*.egg-info/
+dist/
+build/
+
+# Byte-compiled / optimized / DLL files
+*.py[cod]
+*$py.class
+
+# Backup files
+*.bak
+*.swp
+
+# Others
+.env

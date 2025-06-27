@@ -8,6 +8,8 @@
 # python -m http.server 8080
 # http://127.0.0.1:8080/index.html
 
+# docker compose down -v (если не сработает) !!!
+# docker compose up --build
 
 # backend/main.py
 from fastapi import FastAPI, Depends, HTTPException, status
