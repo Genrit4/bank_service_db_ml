@@ -1,4 +1,4 @@
-const API = 'http://127.0.0.1:8000';
+const API = 'http://87.228.97.42:8000';
 
 // Модалки
 function openModal(id) {

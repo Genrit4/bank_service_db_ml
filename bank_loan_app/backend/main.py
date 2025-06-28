@@ -11,6 +11,10 @@
 # docker compose down -v (если не сработает) !!!
 # docker compose up --build
 
+# docker run -d bank_loan_app
+
+# UyXmTNSx6mtw
+
 # backend/main.py
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
@@ -32,7 +36,7 @@ app = FastAPI()
 # CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://127.0.0.1:8080"],
+    allow_origins=["http://87.228.97.42", "http://87.228.97.42:8080"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
