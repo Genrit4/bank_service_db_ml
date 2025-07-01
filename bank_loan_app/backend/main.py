@@ -8,10 +8,9 @@
 # python -m http.server 8080
 # http://127.0.0.1:8080/index.html
 
-# docker compose down -v (если не сработает) !!!
-# docker compose up --build
 
-# docker run -d bank_loan_app
+# docker compose down      # останавливаем старые контейнеры
+# docker compose up -d --build   # пересобираем и запускаем в фоне
 
 # UyXmTNSx6mtw
 
@@ -58,7 +57,6 @@ class Token(BaseModel):
     access_token: str
     token_type: str
 
-# Registration endpoint
 @app.post("/register", status_code=201)
 def register(data: RegisterSchema, session: Session = Depends(get_session)):
     # Проверяем дубликаты по логину и email
@@ -82,7 +80,6 @@ def register(data: RegisterSchema, session: Session = Depends(get_session)):
     session.refresh(user)
     return {"user_id": user.user_id, "login": user.login, "email": user.email, "phone": user.phone}
 
-# Login endpoint
 @app.post("/login", response_model=Token)
 def login(form_data: OAuth2PasswordRequestForm = Depends(), session: Session = Depends(get_session)):
     user = authenticate_user(session, form_data.username, form_data.password)
@@ -131,7 +128,7 @@ async def predict(
     session.refresh(pred)
     return {"loan_status": status}
 
-# После всех API-эндпоинтов монтируем фронтенд
+# После всех эндпоинтов монтируем фронтенд
 frontend_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend")
 app.mount(
     "/",

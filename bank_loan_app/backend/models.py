@@ -11,7 +11,6 @@ class User(SQLModel, table=True):
     login: str = Field(sa_column=Column(String(100), unique=True, nullable=False))
     password_hash: str
 
-    # Новые обязательные поля
     email: str = Field(sa_column=Column(String(100), unique=True, nullable=False))
     phone: str = Field(sa_column=Column(String(20), nullable=False))
 

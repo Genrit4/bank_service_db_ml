@@ -1,19 +1,17 @@
-# docker-compose.yml (в корне bank_loan_app)
 services:
   backend:
     build:
-      context: .               # контекст — весь проект
+      context: .
       dockerfile: backend/Dockerfile
-    container_name: backend
+    container_name: docker_bank_image
     ports:
       - "8000:8000"
     env_file:
       - .env
-    # монтируем backend в /backend, frontend в /frontend
     volumes:
       - ./backend:/backend
       - ./frontend:/frontend
-    working_dir: /backend   # теперь работаем в /backend
+    working_dir: /backend
     depends_on:
       - db
 
